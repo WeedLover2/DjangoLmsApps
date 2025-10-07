@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width={device-width}, initial-scale=1.0">
+    <title>Login</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+</head>
+<body>  
+    {{ form }}
+    <form method="post" action="{% url 'student_login' %}">
+        <h1>Login</h1>
+        {% csrf_token %}
+        <label for="nim">NIM</label>
+        <input type="nim" id="nim" name="nim" placeholder="Enter your NIM" required>
+
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+        {% if message %}
+           <script>
+               alert("{{ message }}");
+           </script>
+        {% endif %}
+        <button type="submit">Login</button> 
+    </form>
+    
+</body>
+</html>

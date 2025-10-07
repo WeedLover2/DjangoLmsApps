@@ -116,6 +116,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [
+    BASE_DIR / "main" / "static",
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
@@ -126,7 +129,14 @@ AUTH_USER_MODEL = 'main.User'
 
 AUTHENTICATION_BACKENDS = [
     
+    'main.backend.NIMAuthBackend',
     'django.contrib.auth.backends.ModelBackend',
+]
+
+PASSWORD_HASHERS = [
+    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',  # Bcrypt
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',         # Fallback
+    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',     # Fallback
 ]
 
 MEDIA_URL = '/Media/'

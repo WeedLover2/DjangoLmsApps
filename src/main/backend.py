@@ -1,19 +1,22 @@
-from django.contrib.auth import get_user_model
-from django.contrib.auth.backends import BaseBackend
+from django.contrib.auth.backends import ModelBackend
+from .models import User
 
-class NimOrEmailBackend(BaseBackend):
-    Usermodel = get_user_model()
+class NIMAuthBackend(ModelBackend):
     def authenticate(self, request, username=None, password=None, **kwargs):
-        if username.isdigit():
-            try:
-                user = self.Usermodel.objects.get(nim=username)
-            except self.Usermodel.DoesNotExist:
-                return None
-        else:
-            try:
-                user = self.Usermodel.objects.get(email=username)
-            except self.Usermodel.DoesNotExist:
-                return None
-        if user.check_password(password):
-            return user
+        print(f"🔍 Backend called with username: {username}")
+        try:
+            user = User.objects.get(nim=username)
+            print(f"✓ Found user: {user.email}")
+            if user.check_password(password):
+                print(f"✓ Password correct!")
+                return user
+            else:
+                print(f"✗ Password incorrect!")
+
+                print(f"✗ Password incorrect for user with NIM: {username}")
+                print(f"🔍 User password field starts with: {user.password[:20]}")
+        except User.DoesNotExist:
+            print(f"✗ No user with NIM: {username}")
+            return None
         return None
+    
