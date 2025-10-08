@@ -19,4 +19,4 @@ class NIMAuthBackend(ModelBackend):
             print(f"✗ No user with NIM: {username}")
             return None
         return None
-    
+

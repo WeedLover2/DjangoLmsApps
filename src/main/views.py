@@ -17,10 +17,10 @@ def StudentLogin(request):
         
         user = authenticate(request, username=nim, password=password)
         
-        print(f"🔐 Authenticate returned: {user}")
+        print(f"Authenticate returned: {user}")
         
         if user is not None:
-            print(f"👤 User role: {user.role}")
+            print(f"User role: {user.role}")
             if user.role == User.Role.STUDENT:
                 login(request, user)
                 print(f"✓ Login successful!")
@@ -34,6 +34,33 @@ def StudentLogin(request):
     
     return render(request, 'studentlogin.html')
 
+def register(request, backend="django.contrib.auth.backends.ModelBackend"):
+    if request.method == 'POST':
+        full_name = request.POST.get('full_name')
+        nim = request.POST.get('nim')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        
+        if User.objects.filter(nim=nim).exists():
+            return render(request, 'register.html', {'message': 'NIM already registered'})
+        
+        if User.objects.filter(email=email).exists():
+            return render(request, 'register.html', {'message': 'Email already registered'})
+        
+        if len(password) < 6:
+            return render(request, 'register.html', {'message': 'Password must be at least 6 characters long'})
+        
+        if password != request.POST.get('confirm_password'):
+            return render(request, 'register.html', {'message': 'Passwords do not match'})
+        
+        user = User.objects.create_user(email=email, full_name=full_name, nim=nim, password=password, role=User.Role.STUDENT)
+        user.save()
+        return HttpResponseRedirect('/home/')
+    return render(request, 'register.html')
+
+def landingpage(request):
+    return render(request, 'ProfilePage.html')
+
 @login_required
 def home(request):
     if request != None and request.user.is_authenticated:
@@ -42,3 +69,5 @@ def home(request):
     else:
         message = "You must be logged in to view this page."
         return HttpResponseRedirect('/studentlogin/')
+    
+

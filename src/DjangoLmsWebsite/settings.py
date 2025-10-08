@@ -141,3 +141,10 @@ PASSWORD_HASHERS = [
 
 MEDIA_URL = '/Media/'
 MEDIA_ROOT = os.path.join (BASE_DIR / 'Media')
+
+SESSION_COOKIE_AGE = 86400
+SESSION_SAVE_EVERY_REQUEST = True  
+
+LOGIN_URL = '/studentlogin/'
+LOGOUT_REDIRECT_URL = '/studentlogin/'  
+LOGIN_REDIRECT_URL = '/home/'

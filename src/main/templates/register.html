@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/register.css' %}">
+</head>
+<body>
+    {{ form }}
+    <form method="post" action="{% url 'register' %}">
+
+        <h2>Register</h2>
+
+        {% csrf_token %}
+        <label for="nim">NIM</label>
+        <input type="nim" id="nim" name="nim" placeholder="Enter your NIM" required>
+
+        <label for="full_name">Full Name</label>
+        <input type="full_name" id="full_name" name="full_name" placeholder="Enter your full name" required>
+
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+
+        <label for="confirm_password">Confirm Password</label>
+        <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm your password" required>
+        {% if message %}
+            <script>
+                alert("{{ message }}");
+            </script>
+        {% endif %}
+        <button type="submit">Register</button> 
+        <p>Already have an account? <a href="{% url 'student_login' %}">Login here</a></p>
+    </form>
+</body>
+</html>
