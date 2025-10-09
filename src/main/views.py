@@ -1,10 +1,8 @@
-from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.shortcuts import render, redirect
+from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import get_user_model, authenticate, login, logout
-from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth import authenticate, login, logout
 from .models import User, Course, PDFModule
-# Create your views here.
 
 # Login
 def StudentLogin(request):
@@ -12,29 +10,20 @@ def StudentLogin(request):
         nim = request.POST.get('nim')
         password = request.POST.get('password')
         
-        print(f"📝 Received NIM: {nim}")
-        print(f"📝 Received password: {password}")
-        
+        # Authenticate user
         user = authenticate(request, username=nim, password=password)
         
-        print(f"Authenticate returned: {user}")
-        
-        if user is not None:
-            print(f"User role: {user.role}")
-            if user.role == User.Role.STUDENT:
-                login(request, user)
-                print(f"✓ Login successful!")
-                return HttpResponseRedirect('/home/')
-            else:
-                print(f"✗ User is not a student")
+        if user is not None and user.role == User.Role.STUDENT:
+            login(request, user)
+            return redirect('home')
         else:
-            print(f"✗ Authentication failed")
-            
-        return render(request, 'studentlogin.html', {'message': 'Invalid NIM or password'})
+            return render(request, 'studentlogin.html', {
+                'message': 'Invalid NIM or password'
+            })
     
     return render(request, 'studentlogin.html')
 
-def register(request, backend="django.contrib.auth.backends.ModelBackend"):
+def register(request):
     if request.method == 'POST':
         full_name = request.POST.get('full_name')
         nim = request.POST.get('nim')
@@ -53,21 +42,53 @@ def register(request, backend="django.contrib.auth.backends.ModelBackend"):
         if password != request.POST.get('confirm_password'):
             return render(request, 'register.html', {'message': 'Passwords do not match'})
         
-        user = User.objects.create_user(email=email, full_name=full_name, nim=nim, password=password, role=User.Role.STUDENT)
-        user.save()
-        return HttpResponseRedirect('/home/')
+        # Create user with hashed password
+        user = User.objects.create_user(
+            email=email,
+            full_name=full_name,
+            nim=nim,
+            password=password,
+            role=User.Role.STUDENT
+        )
+        # Automatically login after registration
+        login(request, user)
+        return redirect('home')
+    
     return render(request, 'register.html')
 
 def landingpage(request):
-    return render(request, 'ProfilePage.html')
+    if request.user.is_authenticated:
+        return redirect('home')
+    return render(request, 'landingpage.html')
+
 
 @login_required
 def home(request):
-    if request != None and request.user.is_authenticated:
-        user = request.user
-        return render(request, 'home.html', {'user': user})
+    if request.user.role == User.Role.STUDENT:
+        courses = Course.objects.filter(students=request.user)
+        return render(request, 'home.html', {'courses': courses})
+    elif request.user.role == User.Role.TEACHER:
+        courses = Course.objects.filter(teacher=request.user)
+        return render(request, 'home.html', {'courses': courses})
     else:
-        message = "You must be logged in to view this page."
-        return HttpResponseRedirect('/studentlogin/')
-    
+        return HttpResponse("Unauthorized", status=401)
 
+def logout_view(request):
+    logout(request)
+    return redirect('student_login')
+@login_required
+def course_detail(request, course_id):
+    try:
+        course = Course.objects.get(id=course_id)
+    except Course.DoesNotExist:
+        return HttpResponse("Course not found", status=404)
+    
+    if request.user.role == User.Role.STUDENT and request.user not in course.students.all():
+        return HttpResponse("Unauthorized", status=401)
+    
+    pdf_modules = PDFModule.objects.filter(course=course)
+    
+    return render(request, 'classpage.html', {
+        'course': course,
+        'pdf_modules': pdf_modules
+    })

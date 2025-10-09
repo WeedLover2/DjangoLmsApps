@@ -134,15 +134,15 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 PASSWORD_HASHERS = [
-    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',  # Bcrypt
-    'django.contrib.auth.hashers.PBKDF2PasswordHasher',         # Fallback
-    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',     # Fallback
+    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',  
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',         
+    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',     
 ]
 
 MEDIA_URL = '/Media/'
 MEDIA_ROOT = os.path.join (BASE_DIR / 'Media')
 
-SESSION_COOKIE_AGE = 86400
+SESSION_COOKIE_AGE = 259200
 SESSION_SAVE_EVERY_REQUEST = True  
 
 LOGIN_URL = '/studentlogin/'

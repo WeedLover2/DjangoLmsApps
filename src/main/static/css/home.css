@@ -1,0 +1,124 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f5f5f5;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+header h1 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.role-badge {
+    display: inline-block;
+    padding: 5px 15px;
+    background: #007bff;
+    color: white;
+    border-radius: 20px;
+    font-size: 0.9em;
+}
+
+.logout {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #dc3545;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: 500;
+    transition: background 0.3s;
+}
+
+.logout:hover {
+    background: #a71d2a;
+}
+
+
+.courses-section h2 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.course-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.course-card {
+    background: white;
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.course-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.course-card h3 {
+    color: #333;
+    margin-bottom: 15px;
+    font-size: 1.3em;
+}
+
+.course-card .description {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.course-card .teacher {
+    color: #888;
+    font-size: 0.9em;
+    margin-bottom: 20px;
+}
+
+.btn-view {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: 500;
+    transition: background 0.3s;
+}
+
+.btn-view:hover {
+    background: #0056b3;
+}
+
+.no-courses {
+    text-align: center;
+    padding: 60px 20px;
+    background: white;
+    border-radius: 10px;
+}
+
+.no-courses p {
+    color: #666;
+    font-size: 1.1em;
+}

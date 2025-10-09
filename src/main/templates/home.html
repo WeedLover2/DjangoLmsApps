@@ -3,14 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Home - My Courses</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
 </head>
 <body>
-    <nav>
-
-    </nav>
-    <footer>
-        <p>2025</p>
-    </footer>
+    <div class="container">
+        <header>
+            <h1>Welcome, {{ request.user.full_name }}!</h1>
+            <p class="role-badge">{{ request.user.get_role_display }}</p>
+            <a href="{% url 'logout' %}"> Logout</a>
+        </header>
+        
+        <section class="courses-section">
+            <h2>My Courses</h2>
+            
+            {% if courses %}
+                <div class="course-grid">
+                    {% for course in courses %}
+                        <div class="course-card">
+                            <h3>{{ course.name }}</h3>
+                            <p class="description">{{ course.description|truncatewords:15 }}</p>
+                            <p class="teacher">
+                                {% if request.user.role == 'STUDENT' %}
+                                    Teacher: {{ course.teacher.full_name }}
+                                {% else %}
+                                    Students: {{ course.students.count }}
+                                {% endif %}
+                            </p>
+                            
+                            <a href="{% url 'course_detail' course.id %}" class="btn-view">
+                                View Course →
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="no-courses">
+                    <p>
+                        {% if request.user.role == 'STUDENT' %}
+                            You are not enrolled in any courses yet.
+                        {% else %}
+                            You haven't created any courses yet.
+                        {% endif %}
+                    </p>
+                </div>
+            {% endif %}
+        </section>
+    </div>
 </body>
 </html>

@@ -10,8 +10,8 @@
 <body>  
     {{ form }}
     <form method="post" action="{% url 'student_login' %}">
-        <h1>Login</h1>
         {% csrf_token %}
+        <h1>Login</h1>
         <label for="nim">NIM</label>
         <input type="nim" id="nim" name="nim" placeholder="Enter your NIM" required>
 
