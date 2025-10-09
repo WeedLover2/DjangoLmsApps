@@ -1,8 +1,9 @@
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse, FileResponse, Http404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from .models import User, Course, PDFModule
+import mimetypes
 
 # Login
 def StudentLogin(request):
@@ -22,6 +23,24 @@ def StudentLogin(request):
             })
     
     return render(request, 'studentlogin.html')
+
+def teacherlogin(request, ):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        
+        # Authenticate user
+        user = authenticate(request, username=email, password=password)
+        
+        if user is not None and user.role == User.Role.TEACHER:
+            login(request, user)
+            return redirect('home')
+        else:
+            return render(request, 'teacherlogin.html', {
+                'message': 'Invalid email or password'
+            })
+    
+    return render(request, 'teacherlogin.html')
 
 def register(request):
     if request.method == 'POST':
@@ -64,11 +83,16 @@ def landingpage(request):
 
 @login_required
 def home(request):
+    print(f"home called for user:", request.user.id, request.user.email)
     if request.user.role == User.Role.STUDENT:
         courses = Course.objects.filter(students=request.user)
+        print(f"student courses:", list(courses.values('id','name')))
         return render(request, 'home.html', {'courses': courses})
     elif request.user.role == User.Role.TEACHER:
         courses = Course.objects.filter(teacher=request.user)
+        return render(request, 'home.html', {'courses': courses})
+    elif request.user.role == User.Role.ADMIN:
+        courses = Course.objects.all()
         return render(request, 'home.html', {'courses': courses})
     else:
         return HttpResponse("Unauthorized", status=401)
@@ -76,19 +100,56 @@ def home(request):
 def logout_view(request):
     logout(request)
     return redirect('student_login')
+
 @login_required
 def course_detail(request, course_id):
-    try:
-        course = Course.objects.get(id=course_id)
-    except Course.DoesNotExist:
-        return HttpResponse("Course not found", status=404)
-    
-    if request.user.role == User.Role.STUDENT and request.user not in course.students.all():
-        return HttpResponse("Unauthorized", status=401)
-    
+
+    course = get_object_or_404(Course, id=course_id)
+
+    if request.user.role == User.Role.STUDENT:
+
+        if request.user not in course.students.all():
+
+            return HttpResponse("You are not enrolled in this course", status=403)
+
+    elif request.user.role == User.Role.TEACHER:
+
+        if course.teacher != request.user:
+
+            return HttpResponse("You are not the teacher of this course", status=403)
+
     pdf_modules = PDFModule.objects.filter(course=course)
-    
     return render(request, 'classpage.html', {
         'course': course,
         'pdf_modules': pdf_modules
     })
+
+@login_required
+def download_pdf(request, pdf_id):
+
+    pdf = get_object_or_404(PDFModule, id=pdf_id)
+
+    if request.user.role == User.Role.STUDENT:
+
+        if request.user not in pdf.course.students.all():
+
+            return HttpResponse("You are not enrolled in this course", status=403)
+    elif request.user.role == User.Role.TEACHER:
+
+        if pdf.course.teacher != request.user:
+
+            return HttpResponse("You are not the teacher of this course", status=403)
+    else:
+
+        return HttpResponse("Unauthorized", status=401)
+
+    if not pdf.file:
+
+        raise Http404("PDF file not found")
+
+    try:
+        response = FileResponse(pdf.file.open('rb'), content_type='Media/pdf')
+        response['Content-Disposition'] = f'attachment; filename="{pdf.title}.pdf"'
+        return response
+    except FileNotFoundError:
+        raise Http404("PDF file not found on server")

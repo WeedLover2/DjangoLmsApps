@@ -3,9 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Class</title>
+    <title>{{ course.name }}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/classpage.css' %}">
 </head>
 <body>
-    <h1>This is {{ course.name }}</h1>
+    <header>
+        <h1>{{ course.name }}</h1>
+        <p class="description">{{ course.description }}</p>
+        
+        {% if request.user.role == 'STUDENT' %}
+            <p class="teacher-name">Teacher: {{ course.teacher.full_name }}</p>
+        {% elif request.user.role == 'TEACHER' %}
+            <p class="student-count">Students Enrolled: {{ course.students.count }}</p>
+        {% endif %}
+        
+        <a href="{% url 'home' %}" class="btn-back">Back to Home</a>
+    </header>
+
+    <div class="content">
+        <h2>Course Materials</h2>
+        
+        {% if pdf_modules %}
+            <div class="pdf-list">
+                {% for pdf in pdf_modules %}
+                    <div class="pdf-card">
+                        <div class="pdf-info">
+                            <h3>{{ pdf.title }}</h3>
+                            <p class="pdf-description">{{ pdf.description }}</p>
+                            <p class="uploaded-info">
+                                Uploaded by: {{ pdf.uploaded_by.full_name }}
+                            </p>
+                        </div>
+                        
+                        <div class="pdf-actions">
+                            <!-- Download Button -->
+                            <a href="{% url 'download_pdf' pdf.id %}" class="btn-download">
+                                Download PDF
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="no-materials">
+                <p>No course materials uploaded yet.</p>
+                {% if request.user.role == 'TEACHER' %}
+                    <p>Upload materials from the admin panel.</p>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
 </body>
 </html>
