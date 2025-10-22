@@ -16,7 +16,6 @@ class CustomUserManager(BaseUserManager):
     def create_superuser(self, email, full_name, password=None, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
-        # Superusers should be ADMIN by default
         extra_fields.setdefault('role', User.Role.ADMIN)
 
         if extra_fields.get('is_staff') is not True:

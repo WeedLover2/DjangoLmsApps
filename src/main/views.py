@@ -42,7 +42,8 @@ def teacherlogin(request, ):
     
     return render(request, 'teacherlogin.html')
 
-def register(request):
+def register(request, backend = 'django.contrib.auth.backends.ModelBackend'):
+    
     if request.method == 'POST':
         full_name = request.POST.get('full_name')
         nim = request.POST.get('nim')

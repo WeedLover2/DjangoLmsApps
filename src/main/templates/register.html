@@ -8,33 +8,35 @@
     <link rel="stylesheet" href="{% static 'css/register.css' %}">
 </head>
 <body>
-    {{ form }}
-    <form method="post" action="{% url 'register' %}">
-
+    <div class="form-container">  <!-- ← WRAPPER INI PENTING! -->
         <h2>Register</h2>
+        
+        <form method="post" action="{% url 'register' %}">
+            {% csrf_token %}
+            
+            {% if message %}
+                <div class="error">{{ message }}</div>
+            {% endif %}
+            
+            <label for="nim">NIM</label>
+            <input type="text" id="nim" name="nim" placeholder="Enter your NIM" required>
 
-        {% csrf_token %}
-        <label for="nim">NIM</label>
-        <input type="nim" id="nim" name="nim" placeholder="Enter your NIM" required>
+            <label for="full_name">Full Name</label>
+            <input type="text" id="full_name" name="full_name" placeholder="Enter your full name" required>
 
-        <label for="full_name">Full Name</label>
-        <input type="full_name" id="full_name" name="full_name" placeholder="Enter your full name" required>
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email" required>
 
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required>
 
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            <label for="confirm_password">Confirm Password</label>
+            <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm your password" required>
 
-        <label for="confirm_password">Confirm Password</label>
-        <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm your password" required>
-        {% if message %}
-            <script>
-                alert("{{ message }}");
-            </script>
-        {% endif %}
-        <button type="submit">Register</button> 
-        <p>Already have an account? <a href="{% url 'student_login' %}">Login here</a></p>
-    </form>
+            <button type="submit">Register</button> 
+            
+            <p>Already have an account? <a href="{% url 'student_login' %}">Login here</a></p>
+        </form>
+    </div>
 </body>
 </html>

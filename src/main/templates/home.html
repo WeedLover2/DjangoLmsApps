@@ -13,6 +13,9 @@
             <h1>Welcome, {{ request.user.full_name }}!</h1>
             <p class="role-badge">{{ request.user.get_role_display }}</p>
             <a href="{% url 'logout' %}" id="btn-logout"> Logout</a>
+            {% if request.user.role == 'ADMIN' %}
+                <a href="/admin" id="btn-admin"> Admin Panel</a>
+            {% endif %}
         </header>
         
         <section class="courses-section">
@@ -27,8 +30,11 @@
                             <p class="teacher">
                                 {% if request.user.role == 'STUDENT' %}
                                     Teacher: {{ course.teacher.full_name }}
-                                {% else %}
+                                {% elif request.user.role == 'TEACHER' %}
                                     Students: {{ course.students.count }}
+                                {% else %}
+                                    Teacher : {{ course.teacher.full_name }} <br>
+                                    Students : {{ course.students.count }}
                                 {% endif %}
                             </p>
                             

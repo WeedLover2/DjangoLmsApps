@@ -4,7 +4,7 @@ from django.urls import path
 from main.views import StudentLogin, home, landingpage, register, logout_view, course_detail, teacherlogin, download_pdf
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls, name='admin.site.url'),
     path('studentlogin/', StudentLogin, name='student_login'),
     path('teacherlogin/', teacherlogin, name='teacher_login'),
     path('home/', home, name='home'),

@@ -17,7 +17,7 @@ body {
 
 header {
     background: white;
-    padding: 30px;
+    padding: 25px;
     border-radius: 10px;
     margin-bottom: 30px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -53,6 +53,21 @@ header h1 {
     background: #a71d2a;
 }
 
+#btn-admin { 
+    text-decoration: none;
+    display: inline-block;
+    padding: 5px 15px;
+    background: #dc3545;
+    color: white;
+    text-decoration: none;
+    border-radius: 15px;
+    font-size: 0.9em;
+    transition: background 0.3s;
+}
+
+#btn-admin:hover {
+    background: #a71d2a;
+}
 
 
 .courses-section h2 {

@@ -1,63 +1,87 @@
 body {
 	font-family: Arial, sans-serif;
 	background-color: #f4f4f4;
-	margin: 0;
+	margin: 0;  /* ← Ubah dari auto ke 0 */
+	padding: 0;  /* ← Ubah dari 20px ke 0 */
+	min-height: 100vh;  /* ← TAMBAH INI */
+	display: flex;  /* ← TAMBAH INI */
+	justify-content: center;  /* ← TAMBAH INI */
+	align-items: center;  /* ← TAMBAH INI */
+}
+
+/* Wrapper untuk form */
+.form-container {  /* ← TAMBAH INI */
+	width: 100%;
+	max-width: 450px;
 	padding: 20px;
 }
 
 h2 {
 	text-align: center;
-	justify-content: center;
+	margin-bottom: 20px;  /* ← TAMBAH INI */
 }
 
 form {
-	vertical-align: middle;
 	background-color: #fff;
 	padding: 20px;
 	border-radius: 5px;
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-	max-width: 45vh;
-	margin: auto;
+	width: 100%;  /* ← Ubah dari max-width */
 	box-sizing: border-box;
-	display: flex;
-	flex-direction: column;
-	gap: 10px;
-	position: relative;
-	top: 250px;
 }
+
 label {
+	display: block;  /* ← TAMBAH INI */
 	margin-bottom: 5px;
-    font-size: 15px;
+	font-size: 15px;
 }
-input[type="nim"],
+
+input[type="text"],  /* ← Ubah dari type="nim" dll */
 input[type="email"],
-input[type="full_name"],
-input[type="password"],
-input[type="confirm_password"] {
-    width: 90%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}   
+input[type="password"] {
+	width: 100%;  /* ← Ubah dari 90% */
+	padding: 10px;
+	margin-bottom: 10px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	box-sizing: border-box;  /* ← TAMBAH INI */
+}
+
 button {
 	font-size: 1rem;
-	width: 50%;
-	padding: 15px 15px;
+	width: 100%;  /* ← Ubah dari 50% */
+	padding: 15px;
 	background-color: #2d5880;
 	color: white;
 	border: none;
 	border-radius: 5px;
 	cursor: pointer;
-	margin: auto;
-	display: flex;
-	flex-direction: column;
+	margin-top: 10px;  /* ← TAMBAH INI */
 }
+
 button:hover {
 	transition: background-color 0.3s ease;
 	background-color: #2c3e50;
 }
+
 .error {
-    color: red;
-    text-align: center;
+	color: red;
+	text-align: center;
+	margin-bottom: 15px;  /* ← TAMBAH INI */
+}
+
+/* Link "Already have account" */
+form p {  /* ← TAMBAH INI */
+	text-align: center;
+	margin-top: 15px;
+	font-size: 14px;
+}
+
+form p a {  /* ← TAMBAH INI */
+	color: #2d5880;
+	text-decoration: none;
+}
+
+form p a:hover {  /* ← TAMBAH INI */
+	text-decoration: underline;
 }
