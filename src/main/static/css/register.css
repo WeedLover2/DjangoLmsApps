@@ -1,16 +1,16 @@
 body {
 	font-family: Arial, sans-serif;
 	background-color: #f4f4f4;
-	margin: 0;  /* ← Ubah dari auto ke 0 */
-	padding: 0;  /* ← Ubah dari 20px ke 0 */
-	min-height: 100vh;  /* ← TAMBAH INI */
-	display: flex;  /* ← TAMBAH INI */
-	justify-content: center;  /* ← TAMBAH INI */
-	align-items: center;  /* ← TAMBAH INI */
+	margin: 0;  
+	padding: 0;  
+	min-height: 100vh;  
+	display: flex;  
+	justify-content: center; 
+	align-items: center;  
 }
 
-/* Wrapper untuk form */
-.form-container {  /* ← TAMBAH INI */
+
+.form-container {  
 	width: 100%;
 	max-width: 450px;
 	padding: 20px;
@@ -18,7 +18,7 @@ body {
 
 h2 {
 	text-align: center;
-	margin-bottom: 20px;  /* ← TAMBAH INI */
+	margin-bottom: 20px;  
 }
 
 form {
@@ -31,32 +31,32 @@ form {
 }
 
 label {
-	display: block;  /* ← TAMBAH INI */
+	display: block;  
 	margin-bottom: 5px;
 	font-size: 15px;
 }
 
-input[type="text"],  /* ← Ubah dari type="nim" dll */
+input[type="text"],  
 input[type="email"],
 input[type="password"] {
-	width: 100%;  /* ← Ubah dari 90% */
+	width: 100%;  
 	padding: 10px;
 	margin-bottom: 10px;
 	border: 1px solid #ccc;
 	border-radius: 5px;
-	box-sizing: border-box;  /* ← TAMBAH INI */
+	box-sizing: border-box;  
 }
 
 button {
 	font-size: 1rem;
-	width: 100%;  /* ← Ubah dari 50% */
+	width: 100%;  
 	padding: 15px;
 	background-color: #2d5880;
 	color: white;
 	border: none;
 	border-radius: 5px;
 	cursor: pointer;
-	margin-top: 10px;  /* ← TAMBAH INI */
+	margin-top: 10px;  
 }
 
 button:hover {
@@ -67,21 +67,21 @@ button:hover {
 .error {
 	color: red;
 	text-align: center;
-	margin-bottom: 15px;  /* ← TAMBAH INI */
+	margin-bottom: 15px;  
 }
 
-/* Link "Already have account" */
-form p {  /* ← TAMBAH INI */
+
+form p {  
 	text-align: center;
 	margin-top: 15px;
 	font-size: 14px;
 }
 
-form p a {  /* ← TAMBAH INI */
+form p a {  
 	color: #2d5880;
 	text-decoration: none;
 }
 
-form p a:hover {  /* ← TAMBAH INI */
+form p a:hover {  
 	text-decoration: underline;
 }
